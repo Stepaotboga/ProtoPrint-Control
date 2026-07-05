@@ -28,38 +28,10 @@ class TerminalWindow(QDialog):
 
     def __init__(self, serial_manager, parent=None):
         super().__init__(parent)
-        ui_path = BASE_DIR / "ui" / "main_window.ui"
-
-        if ui_path.exists():
-            uic.loadUi(str(ui_path), self)
-            if not hasattr(self, 'width'):
-                self.resize(1200, 800)
-        else:
-            print("UI файл не найден, используется программное создание интерфейса")
-            self.setWindowTitle("CNC Controller - Marlin 2.1.2.5")
-            self.setGeometry(100, 100, 1200, 800)
-
-        # Инициализация модулей
-        self.serial_manager = SerialManager()
-        self.gcode_handler = GCodeHandler()
-        self.sd_manager = SDCardManager(self.serial_manager)
-
-        # Загрузка настроек
-        self.load_settings()
-
-        # Инициализация пользовательских виджетов
-        self.init_custom_widgets()
-
-        # Подключение сигналов
-        self.connect_signals()
-
-        # Таймер для обновления позиции
-        self.position_timer = QTimer()
-        self.position_timer.timeout.connect(self.update_position)
-        self.position_timer.start(100)
-
-        # Инициализация рабочей области
-        self.init_work_area()
+        self.serial_manager = serial_manager
+        self.setWindowTitle("Терминал станка")
+        self.setGeometry(200, 200, 600, 400)
+        self.init_ui()
 
     def init_ui(self):
         layout = QVBoxLayout()
@@ -275,68 +247,6 @@ class CNCController(QMainWindow):
             with open(height_map_path, 'w') as f:
                 json.dump({"points": []}, f, indent=4)
 
-    def init_custom_widgets(self):
-        """Инициализация кастомных виджетов, которых нет в UI файле"""
-        # Создаем виджет рабочей области
-        self.work_area = WorkAreaWidget(self.workAreaWidget)
-        work_area_layout = QVBoxLayout(self.workAreaWidget)
-        work_area_layout.setContentsMargins(0, 0, 0, 0)
-        work_area_layout.addWidget(self.work_area)
-
-        # Устанавливаем размеры из конфигурации
-        wa = self.machine_config["work_area"]
-        self.work_area.set_dimensions(wa["width"], wa["height"], wa["depth"])
-
-    def connect_signals(self):
-        """Подключение всех сигналов к элементам интерфейса"""
-        # Верхняя панель
-        self.connectButton.clicked.connect(self.toggle_connection)
-        self.refreshPortsButton.clicked.connect(self.refresh_ports)
-        self.emergencyStopButton.clicked.connect(self.emergency_stop)
-        self.terminalButton.clicked.connect(self.open_terminal)
-
-        # Ручное управление
-        self.xPlusButton.clicked.connect(lambda: self.manual_control.move_axis('X', 1))
-        self.xMinusButton.clicked.connect(lambda: self.manual_control.move_axis('X', -1))
-        self.yPlusButton.clicked.connect(lambda: self.manual_control.move_axis('Y', 1))
-        self.yMinusButton.clicked.connect(lambda: self.manual_control.move_axis('Y', -1))
-        self.zPlusButton.clicked.connect(lambda: self.manual_control.move_axis('Z', 1))
-        self.zMinusButton.clicked.connect(lambda: self.manual_control.move_axis('Z', -1))
-
-        self.g90Button.clicked.connect(lambda: self.serial_manager.send_command("G90"))
-        self.g91Button.clicked.connect(lambda: self.serial_manager.send_command("G91"))
-        self.g92Button.clicked.connect(lambda: self.serial_manager.send_command("G92 X0 Y0 Z0"))
-        self.parkButton.clicked.connect(self.manual_control.park_machine)
-        self.homeButton.clicked.connect(lambda: self.serial_manager.send_command("G28"))
-
-        # Управление программами
-        self.selectFileButton.clicked.connect(self.select_gcode_file)
-        self.runButton.clicked.connect(self.run_gcode)
-        self.stopButton.clicked.connect(self.stop_gcode)
-        self.uploadToSDButton.clicked.connect(self.upload_to_sd)
-        self.printFromSDButton.clicked.connect(self.print_from_sd)
-
-        # Настройки
-        self.workAreaSettingsButton.clicked.connect(self.open_work_area_settings)
-        self.actionWorkAreaSettings.triggered.connect(self.open_work_area_settings)
-
-        # Меню
-        self.actionExit.triggered.connect(self.close)
-        self.actionAbout.triggered.connect(self.show_about)
-
-    def init_work_area(self):
-        """Инициализация виджета рабочей области"""
-        # Создаем ManualControlWidget и передаем ему нужные элементы
-        self.manual_control = ManualControlWidget(self.serial_manager, self)
-
-    def show_about(self):
-        """Показать окно о программе"""
-        QMessageBox.about(self, "О программе",
-                          "CNC Controller v1.0\n\n"
-                          "Программа для управления ЧПУ станком\n"
-                          "с прошивкой Marlin 2.1.2.5\n\n"
-                          "© 2024")
-
     def init_ui(self):
         # Главный виджет
         central_widget = QWidget()
@@ -502,49 +412,28 @@ class CNCController(QMainWindow):
     def toggle_connection(self):
         """Подключение/отключение от станка"""
         if not self.serial_manager.is_connected:
-            port = self.portComboBox.currentText()
+            port = self.port_combo.currentText()
             if port:
                 if self.serial_manager.connect(port):
-                    self.connectButton.setText("Отключить")
-                    self.connectButton.setStyleSheet("""
-                        QPushButton { 
-                            background-color: #f44336; 
-                            color: white; 
-                            font-weight: bold;
-                            border-radius: 5px;
-                        }
-                        QPushButton:hover {
-                            background-color: #da190b;
-                        }
-                    """)
-                    self.runButton.setEnabled(True)
-                    self.statusbar.showMessage(f"Подключено к {port}")
+                    self.connect_button.setText("Отключить")
+                    self.connect_button.setStyleSheet(
+                        "QPushButton { background-color: #f44336; color: white; padding: 8px; }")
+                    self.run_button.setEnabled(True)
                 else:
                     QMessageBox.critical(self, "Ошибка", "Не удалось подключиться к порту")
         else:
             self.serial_manager.disconnect()
-            self.connectButton.setText("Подключить")
-            self.connectButton.setStyleSheet("""
-                QPushButton { 
-                    background-color: #4CAF50; 
-                    color: white; 
-                    font-weight: bold;
-                    border-radius: 5px;
-                }
-                QPushButton:hover {
-                    background-color: #45a049;
-                }
-            """)
-            self.runButton.setEnabled(False)
-            self.stopButton.setEnabled(False)
-            self.statusbar.showMessage("Отключено")
+            self.connect_button.setText("Подключить")
+            self.connect_button.setStyleSheet("QPushButton { background-color: #4CAF50; color: white; padding: 8px; }")
+            self.run_button.setEnabled(False)
+            self.stop_button.setEnabled(False)
 
     def refresh_ports(self):
         """Обновление списка доступных портов"""
-        self.portComboBox.clear()
+        self.port_combo.clear()
         ports = serial.tools.list_ports.comports()
         for port in ports:
-            self.portComboBox.addItem(f"{port.device} - {port.description}")
+            self.port_combo.addItem(port.device)
 
     def emergency_stop(self):
         """Аварийная остановка"""
