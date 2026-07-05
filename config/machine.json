@@ -1,8 +1,8 @@
 {
     "work_area": {
-        "width": 350,
-        "height": 400,
-        "depth": 70
+        "width": 350.0,
+        "height": 400.0,
+        "depth": 70.0
     },
     "default_speed": 1000,
     "steps_per_mm": {

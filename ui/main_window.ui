@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>800</height>
+    <width>904</width>
+    <height>745</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -209,7 +209,7 @@ QPushButton:hover {
          <property name="minimumSize">
           <size>
            <width>200</width>
-           <height>100</height>
+           <height>200</height>
           </size>
          </property>
          <property name="styleSheet">
@@ -573,7 +573,7 @@ QPushButton:disabled {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>904</width>
      <height>21</height>
     </rect>
    </property>
