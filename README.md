@@ -1,4 +1,4 @@
-# CNC Controller - Управление ЧПУ станком на Marlin
+# ProtoPrint Control - Управление станка ProtoPrint на Marlin
 
 ![Python](https://img.shields.io/badge/Python-3.7+-blue.svg)
 ![PyQt5](https://img.shields.io/badge/PyQt5-5.15+-green.svg)
@@ -67,8 +67,8 @@
 ## Требования
 
 ### Аппаратные
-- ЧПУ станок с прошивкой Marlin 2.1.2.5
-- USB соединение (без датчиков температуры)
+- ЧПУ станок ProtoPrint с прошивкой Marlin 2.1.2.5 
+- USB соединение
 - SD карта в станке (опционально)
 
 ### Программные
@@ -77,7 +77,7 @@
 - pyserial 3.5 или выше
 - Операционная система: Windows 7/10/11, Linux, macOS
 
-## 🚀 Установка
+## Установка
 
 ### 1. Клонирование репозитория
 ```bash
