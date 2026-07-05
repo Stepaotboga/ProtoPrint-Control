@@ -1,0 +1,23 @@
+{
+    "work_area": {
+        "width": 350,
+        "height": 400,
+        "depth": 70
+    },
+    "default_speed": 1000,
+    "steps_per_mm": {
+        "x": 80,
+        "y": 80,
+        "z": 400
+    },
+    "acceleration": {
+        "x": 500,
+        "y": 500,
+        "z": 100
+    },
+    "parking_position": {
+        "x": 0,
+        "y": 0,
+        "z": 10
+    }
+}
