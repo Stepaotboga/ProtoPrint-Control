@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CNC Controller - Marlin 2.1.2.5</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+    background-color: #f0f0f0;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="mainGridLayout">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
+    <property name="spacing">
+     <number>5</number>
+    </property>
+    <item row="0" column="0" colspan="2">
+     <widget class="QWidget" name="topPanel" native="true">
+      <layout class="QHBoxLayout" name="topPanelLayout">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="connectButton">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: #45a049;
+}</string>
+         </property>
+         <property name="text">
+          <string>Подключить</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="portWidget" native="true">
+         <layout class="QHBoxLayout" name="portLayout">
+          <property name="spacing">
+           <number>5</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="portLabel">
+            <property name="text">
+             <string>USB Порт:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="portComboBox">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="refreshPortsButton">
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Обновить список портов</string>
+            </property>
+            <property name="text">
+             <string>↻</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="emergencyStopButton">
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: #FF0000;
+    color: white;
+    font-weight: bold;
+    border: 3px solid #CC0000;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: #CC0000;
+}</string>
+         </property>
+         <property name="text">
+          <string>АВАРИЙНАЯ
+ОСТАНОВКА</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="terminalButton">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Терминал</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QWidget" name="leftPanel" native="true">
+      <layout class="QVBoxLayout" name="leftPanelLayout">
+       <property name="spacing">
+        <number>5</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QWidget" name="workAreaWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: white;
+border: 2px solid #cccccc;
+border-radius: 5px;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="workAreaSettingsButton">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Настройка рабочей области</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QTabWidget" name="controlTabWidget">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTabWidget::pane {
+    border: 1px solid #cccccc;
+    background: white;
+}
+QTabBar::tab {
+    background: #e0e0e0;
+    padding: 8px;
+    margin-right: 2px;
+}
+QTabBar::tab:selected {
+    background: white;
+    border-bottom: 2px solid #4CAF50;
+}</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="manualControlTab">
+       <attribute name="title">
+        <string>Ручное управление</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="manualControlLayout">
+        <item>
+         <widget class="QGroupBox" name="movementGroup">
+          <property name="title">
+           <string>Движение по осям</string>
+          </property>
+          <layout class="QGridLayout" name="movementGridLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="stepLabel">
+             <property name="text">
+              <string>Шаг (мм):</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="stepComboBox">
+             <property name="currentIndex">
+              <number>1</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>0.1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>10</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>100</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QPushButton" name="yPlusButton">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Y+ ▲</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QPushButton" name="xMinusButton">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>X- ◄</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QPushButton" name="xPlusButton">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>X+ ►</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QPushButton" name="yMinusButton">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Y- ▼</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="zAxisLabel">
+             <property name="text">
+              <string>Z ось:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QPushButton" name="zPlusButton">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Z+ ▲</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QPushButton" name="zMinusButton">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Z- ▼</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="commandsGroup">
+          <property name="title">
+           <string>Команды</string>
+          </property>
+          <layout class="QVBoxLayout" name="commandsLayout">
+           <item>
+            <widget class="QPushButton" name="g90Button">
+             <property name="text">
+              <string>G90 - Абсолютное позиционирование</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="g91Button">
+             <property name="text">
+              <string>G91 - Относительное позиционирование</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="g92Button">
+             <property name="text">
+              <string>G92 - Установить текущую позицию</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="parkButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: #FFA500;
+    color: white;
+    font-weight: bold;
+}</string>
+             </property>
+             <property name="text">
+              <string>Парковка</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="homeButton">
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: #2196F3;
+    color: white;
+    font-weight: bold;
+}</string>
+             </property>
+             <property name="text">
+              <string>Домой (G28)</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="programControlTab">
+       <attribute name="title">
+        <string>Управление программами</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="programControlLayout">
+        <item>
+         <widget class="QGroupBox" name="gcodeGroup">
+          <property name="title">
+           <string>G-код программа</string>
+          </property>
+          <layout class="QVBoxLayout" name="gcodeLayout">
+           <item>
+            <widget class="QLabel" name="filePathLabel">
+             <property name="styleSheet">
+              <string notr="true">background-color: #f9f9f9;
+padding: 5px;
+border: 1px solid #ddd;</string>
+             </property>
+             <property name="text">
+              <string>Файл не выбран</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="selectFileButton">
+             <property name="text">
+              <string>Выбрать файл G-кода</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="runButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: #45a049;
+}
+QPushButton:disabled {
+    background-color: #cccccc;
+}</string>
+             </property>
+             <property name="text">
+              <string>▶ ЗАПУСК</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="stopButton">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: #f44336;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: #da190b;
+}
+QPushButton:disabled {
+    background-color: #cccccc;
+}</string>
+             </property>
+             <property name="text">
+              <string>■ СТОП</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="sdCardGroup">
+          <property name="title">
+           <string>SD карта</string>
+          </property>
+          <layout class="QVBoxLayout" name="sdCardLayout">
+           <item>
+            <widget class="QPushButton" name="uploadToSDButton">
+             <property name="text">
+              <string>Загрузить на SD карту</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="printFromSDButton">
+             <property name="text">
+              <string>Печать с SD карты</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="actionLoadConfig"/>
+    <addaction name="actionSaveConfig"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Настройки</string>
+    </property>
+    <addaction name="actionWorkAreaSettings"/>
+    <addaction name="actionMachineSettings"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Помощь</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuSettings"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="styleSheet">
+    <string notr="true">QStatusBar {
+    background-color: #e0e0e0;
+    border-top: 1px solid #ccc;
+}</string>
+   </property>
+  </widget>
+  <action name="actionLoadConfig">
+   <property name="text">
+    <string>Загрузить конфигурацию</string>
+   </property>
+  </action>
+  <action name="actionSaveConfig">
+   <property name="text">
+    <string>Сохранить конфигурацию</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+  </action>
+  <action name="actionWorkAreaSettings">
+   <property name="text">
+    <string>Настройки рабочей области</string>
+   </property>
+  </action>
+  <action name="actionMachineSettings">
+   <property name="text">
+    <string>Настройки станка</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>О программе</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
