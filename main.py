@@ -237,6 +237,7 @@ class CNCController(QMainWindow):
         self.position_timer.timeout.connect(self.update_position)
         self.position_timer.start(100)
 
+
     def load_settings(self):
         """Загрузка настроек из JSON файлов"""
         config_dir = BASE_DIR / "config"
